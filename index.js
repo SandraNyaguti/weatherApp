@@ -115,7 +115,8 @@ function geolocation(event) {
 
 let button = document.querySelector("button");
 button.addEventListener("click", geolocation);
-// navigator.geolocation.getCurrentPosition(currentLocation);
+
+navigator.geolocation.getCurrentPosition(currentLocation);
 //==================================================================================================//
 
 //Search engine
