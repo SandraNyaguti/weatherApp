@@ -7,13 +7,13 @@ let date = new Date(); //new date
 // Get new date
 let day = date.getDay();
 let days = [
-	"Sunday",
-	"Monday",
-	"Tuesday",
-	"Wednesday",
-	"Thursday",
-	"Friday",
-	"Saturday",
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
 ];
 day = days[date.getDay()]; //reassign day
 
@@ -23,18 +23,18 @@ let currentDate = date.getDate();
 // Get new month
 let month = date.getMonth();
 let months = [
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"June",
-	"July",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
 ];
 month = months[date.getMonth()]; //reassign month
 
@@ -44,13 +44,13 @@ let year = date.getFullYear();
 // Get new hour
 let hour = date.getHours();
 if (hour < 10) {
-	hour = `0${hour}`;
+  hour = `0${hour}`;
 }
 
 //Get new minutes
 let minutes = date.getMinutes();
 if (minutes < 10) {
-	minutes = `0${minutes}`;
+  minutes = `0${minutes}`;
 }
 
 // //Get new seconds
@@ -84,83 +84,87 @@ timeNow.innerHTML = `${hour}:${minutes}`;
 const apiKey = "d6c8c570602004f838d15bd6dcda7652";
 
 function location(response) {
-	let userPosition = response.data.name;
-	let country = response.data.sys.country;
-	let temperature = Math.round(response.data.main.temp);
+  let userPosition = response.data.name;
+  let country = response.data.sys.country;
+  let temperature = Math.round(response.data.main.temp);
 
-	let userLocation = document.querySelector("#city");
-	userLocation.innerHTML = userPosition;
+  let userLocation = document.querySelector("#city");
+  userLocation.innerHTML = userPosition;
 
-	let userCountry = document.querySelector("#country");
-	userCountry.innerHTML = country;
+  let userCountry = document.querySelector("#country");
+  userCountry.innerHTML = country;
 
-	let currentTemp = document.querySelector("#temp");
-	currentTemp.innerHTML = `${temperature}℃`;
+  let currentTemp = document.querySelector("#temp");
+  currentTemp.innerHTML = `${temperature}℃`;
 
-	let today = document.querySelector("#day");
-	today.innerHTML = day;
+  let today = document.querySelector("#day");
+  today.innerHTML = day;
 }
 function currentLocation(position) {
-	let lat = position.coords.latitude;
-	let lon = position.coords.longitude;
-	let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
-	axios.get(apiUrl).then(location);
+  axios.get(apiUrl).then(location);
 }
 
 function geolocation(event) {
-	event.preventDefault();
-	navigator.geolocation.getCurrentPosition(currentLocation);
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(currentLocation);
 }
 
 let button = document.querySelector("button");
 button.addEventListener("click", geolocation);
-
+// navigator.geolocation.getCurrentPosition(currentLocation);
 //==================================================================================================//
 
+//Search engine
 //Add search engine
 
 function enteredCity(event) {
-	event.preventDefault();
-	// Get user entered city name
-	let city = document.querySelector("#input-city");
+  event.preventDefault();
+  // Get user entered city name
+  let city = document.querySelector("#input-city");
 
-	// Get weather details using openweather api
-	let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apiKey}&units=metric`;
-	console.log(apiUrl);
-	axios.get(apiUrl).then(displayWeather);
-}
+  let cityLocation = document.querySelector("#city");
 
-//Function to display weather details on browser
-function displayWeather(response) {
-	let cityName = response.data.name;
-	let displayCity = document.querySelector("#city");
-	displayCity.innerHTML = cityName;
+  cityLocation.innerHTML = city.value;
 
-	//Find user entered city in the openweather , match it and display the details
+  // Get weather details using openweather api
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayTemp);
 
-	//Display temperature
-	let temperature = Math.round(response.data.main.temp);
-	let currentTemp = document.querySelector("#temp");
-	currentTemp.innerHTML = `${temperature}℃`;
-	//display country
-	let country = response.data.sys.country;
-	let userCountry = document.querySelector("#country");
-	userCountry.innerHTML = country;
+  //Function to display weather details on browser
+  function displayTemp(response) {
+    console.log(apiUrl);
+    let cityName = response.data.name;
+    console.log(cityName);
 
-	//Display winds
+    //Find user entered city in the openweather, match it and display the details
+    if (city.value === cityName) {
+      //Display temperature
+      let temperature = Math.round(response.data.main.temp);
+      let currentTemp = document.querySelector("#temp");
+      currentTemp.innerHTML = `${temperature}℃`;
+      //display country
+      let country = response.data.sys.country;
+      let userCountry = document.querySelector("#country");
+      userCountry.innerHTML = country;
 
-	//Display chances of precipation
-	//Display Length of the day
-	//Display Length of the Night
+      //Display winds
+      //Display chances of precipation
+      //Display Length of the day
+      //Display Length of the Night
 
-	//If city name is incorrect
+      //If details do not match
+    } else {
+      location.innerHTML = `${city.value} not found`;
+    }
+  }
 }
 
 // Add event listener to search button
 let search = document.querySelector("form");
 search.addEventListener("submit", enteredCity);
 
-// User Location on app load
 navigator.geolocation.getCurrentPosition(currentLocation);
-
