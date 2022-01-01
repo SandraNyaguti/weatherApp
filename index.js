@@ -160,3 +160,7 @@ function displayWeather(response) {
 // Add event listener to search button
 let search = document.querySelector("form");
 search.addEventListener("submit", enteredCity);
+
+// User Location on app load
+navigator.geolocation.getCurrentPosition(currentLocation);
+
