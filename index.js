@@ -140,6 +140,10 @@ function enteredCity(event) {
     console.log(apiUrl);
     let cityName = response.data.name;
     console.log(cityName);
+    
+    
+  cityLocation.innerHTML = cityName;
+    
 
     //Find user entered city in the openweather, match it and display the details
 //     if (city.value === cityName) {
