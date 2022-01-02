@@ -142,7 +142,7 @@ function enteredCity(event) {
     console.log(cityName);
 
     //Find user entered city in the openweather, match it and display the details
-    if (city.value === cityName) {
+//     if (city.value === cityName) {
       //Display temperature
       let temperature = Math.round(response.data.main.temp);
       let currentTemp = document.querySelector("#temp");
@@ -158,9 +158,9 @@ function enteredCity(event) {
       //Display Length of the Night
 
       //If details do not match
-    } else {
-      location.innerHTML = `${city.value} not found`;
-    }
+//     } else {
+//       location.innerHTML = `${city.value} not found`;
+//     }
   }
 }
 
